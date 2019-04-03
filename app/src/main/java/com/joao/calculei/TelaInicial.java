@@ -16,23 +16,6 @@ public class TelaInicial extends AppCompatActivity {
     private Button btnRank;
     private Button btnConfig;
 
-
-
-    private void ComecarJogo() {
-        Intent Jogo = new Intent(this, TelaJogo.class);
-        startActivity(Jogo);
-    }
-
-    private void AbrirRank() {
-        Intent Jogo = new Intent(this, TelaRanking.class);
-        startActivity(Jogo);
-    }
-
-    private void AbrirConfig() {
-        Intent Config = new Intent(this, TelaConfig.class);
-        startActivity(Config);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +43,20 @@ public class TelaInicial extends AppCompatActivity {
                 AbrirConfig();
             }
         });
+    }
 
-        //.setOnTouchListener(mDelayHideTouchListener);
+    private void ComecarJogo() {
+        Intent Jogo = new Intent(this, TelaJogo.class);
+        startActivity(Jogo);
+    }
+
+    private void AbrirRank() {
+        Intent Jogo = new Intent(this, TelaRanking.class);
+        startActivity(Jogo);
+    }
+
+    private void AbrirConfig() {
+        Intent Config = new Intent(this, TelaConfig.class);
+        startActivity(Config);
     }
 }
