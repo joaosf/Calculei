@@ -3,60 +3,58 @@ package Objetos;
 import android.support.v7.app.AppCompatActivity;
 
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Exercicio extends AppCompatActivity {
-    private int Peso = 0;
-    private int[] Numeros = new int[0];
-    private String[] Operacoes;
-    private String[] Opcoes;
-    private Double Resultado;
-    private Double ResultadoEsperado = 0.0;
-    private boolean Ativo = false;
-    private Random FuncRandom;
-    private int PercentualRestante;
-    Thread ThreadPercentual;
-    int TempoParaResolver;
+    private int peso = 0;
+    private int[] numeros = new int[0];
+    private String[] operacoes;
+    private String[] opcoes;
+    private Double resultado;
+    private Double resultadoEsperado = 0.0;
+    private boolean ativo = false;
+    private Random funcRandom;
+    private int percentualRestante;
+    Thread threadPercentual;
+    int tempoParaResolver;
 
-    public void Preprar(int TempoResolve) {
-        FuncRandom = new Random();
-        TempoParaResolver = TempoResolve;
-        Opcoes = new String[4];
-        Opcoes[0] = "+";
-        Opcoes[1] = "-";
-        Opcoes[2] = "*";
-        Opcoes[3] = "/";
-        PercentualRestante = TempoParaResolver/1000;
+    public void preparar(int TempoResolve) {
+        funcRandom = new Random();
+        tempoParaResolver = TempoResolve;
+        opcoes = new String[4];
+        opcoes[0] = "+";
+        opcoes[1] = "-";
+        opcoes[2] = "*";
+        opcoes[3] = "/";
+        percentualRestante = tempoParaResolver /1000;
     }
 
-    public void ZerarExercicio() {
-        Ativo = false;
-        Peso = 0;
-        PercentualRestante = TempoParaResolver/1000;
+    public void zerarExercicio() {
+        ativo = false;
+        peso = 0;
+        percentualRestante = tempoParaResolver /1000;
     }
-    public void ProximoExercicio(int Dificuldade) {
-        while (Peso < 2) {
-            Peso = FuncRandom.nextInt(Dificuldade)+1;
+    public void proximoExercicio(int dificuldade) {
+        while (peso < 2) {
+            peso = funcRandom.nextInt(dificuldade)+1;
         }
-        Numeros = new int[Peso];
-        Operacoes = new String[Peso-1];
-        for (int i = 0;i<Peso;i++) {
-            Numeros[i] = FuncRandom.nextInt(Dificuldade*5);
-            while (Numeros[i] < 1) {
-                Numeros[i] = FuncRandom.nextInt(Dificuldade*5);
+        numeros = new int[peso];
+        operacoes = new String[peso -1];
+        for (int i = 0; i< peso; i++) {
+            numeros[i] = funcRandom.nextInt(dificuldade*5);
+            while (numeros[i] < 1) {
+                numeros[i] = funcRandom.nextInt(dificuldade*5);
             }
-            if (i < Peso-1) {
-                Operacoes[i] = Opcoes[FuncRandom.nextInt(Opcoes.length-1)];
+            if (i < peso -1) {
+                operacoes[i] = opcoes[funcRandom.nextInt(opcoes.length-1)];
             }
         }
-        Ativo = true;
+        ativo = true;
         CalcularResultadoEsperado();
-        AtualizarPercentual();
+        atualizarPercentual();
     }
 
-    private void AtualizarPercentual() {
-        ThreadPercentual = new Thread() { //new thread
+    private void atualizarPercentual() {
+        threadPercentual = new Thread() { //new thread
             public void run() {
                 try {
                     do {
@@ -64,86 +62,86 @@ public class Exercicio extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (PercentualRestante > 0) {
-                                    PercentualRestante = PercentualRestante-1;
+                                if (percentualRestante > 0) {
+                                    percentualRestante = percentualRestante -1;
                                 }
                             }
                         });
 
 
                     }
-                    while (PercentualRestante > 0);
+                    while (percentualRestante > 0);
                 } catch (InterruptedException e) {
 
                 }
             }
         };
-        ThreadPercentual.start();
+        threadPercentual.start();
     }
 
     private void CalcularResultadoEsperado() {
-        ResultadoEsperado = 0.0;
+        resultadoEsperado = 0.0;
         int NumeroAnterior = 0;
         String OperacaoAtual = "";
-        for (int i = 0;i<Numeros.length;i++) {
+        for (int i = 0; i< numeros.length; i++) {
             if (i > 0) {
-                OperacaoAtual = Operacoes[i-1];
+                OperacaoAtual = operacoes[i-1];
                 if (OperacaoAtual.equals("+")) {
-                    ResultadoEsperado = ResultadoEsperado + (NumeroAnterior + Numeros[i]);
+                    resultadoEsperado = resultadoEsperado + (NumeroAnterior + numeros[i]);
                 } else
                 if (OperacaoAtual.equals("-")) {
-                    ResultadoEsperado = ResultadoEsperado + (NumeroAnterior - Numeros[i]);
+                    resultadoEsperado = resultadoEsperado + (NumeroAnterior - numeros[i]);
                 } else
                 if (OperacaoAtual.equals("*")) {
-                    ResultadoEsperado = ResultadoEsperado + (NumeroAnterior * Numeros[i]);
+                    resultadoEsperado = resultadoEsperado + (NumeroAnterior * numeros[i]);
                 }else
                 if (OperacaoAtual.equals("/")) {
-                    ResultadoEsperado = ResultadoEsperado + (NumeroAnterior / Numeros[i]);
+                    resultadoEsperado = resultadoEsperado + (NumeroAnterior / numeros[i]);
                 }
                 i=i+1;
             }
-            if (i < Numeros.length) {
-                NumeroAnterior = Numeros[i];
+            if (i < numeros.length) {
+                NumeroAnterior = numeros[i];
             }
         }
     }
 
     public int[] getNumeros() {
-        return Numeros;
+        return numeros;
     }
 
     public String[] getOperacoes() {
-        return Operacoes;
+        return operacoes;
     }
 
     public Double getResultado() {
-        return Resultado;
+        return resultado;
     }
 
     public void setResultado(Double resultado) {
-        Resultado = resultado;
+        this.resultado = resultado;
     }
 
     public Double getResultadoEsperado() {
-        return ResultadoEsperado;
+        return resultadoEsperado;
     }
 
     public boolean isAtivo() {
-        return Ativo;
+        return ativo;
     }
 
     public int getPercentualRestante() {
-        return (100*PercentualRestante)/15;
+        return (100* percentualRestante)/15;
     }
 
     public String getTxtConta() {
         String Retorno = "";
-        if (Numeros.length > 0) {
-            for (int i = 0; i < Numeros.length;i++) {
+        if (numeros.length > 0) {
+            for (int i = 0; i < numeros.length; i++) {
                 if (i > 0) {
-                    Retorno = Retorno + Operacoes[i-1] + String.valueOf(Numeros[i]);
+                    Retorno = Retorno + operacoes[i-1] + String.valueOf(numeros[i]);
                 } else {
-                    Retorno = String.valueOf(Numeros[i]);
+                    Retorno = String.valueOf(numeros[i]);
                 }
             }
         }
@@ -152,6 +150,6 @@ public class Exercicio extends AppCompatActivity {
     }
 
     public int getPeso() {
-        return Peso;
+        return peso;
     }
 }
