@@ -8,6 +8,11 @@
 
     <string name="title_activity_tela_ranking">TelaRanking</string>
     <string name="title_activity_tela_config">Configurações</string>
+    <string name="button_activity_tela_inicial_jogar">JOGAR</string>
+    <string name="button_activity_tela_inicial_ranking">RANKING</string>
+    <string name="button_activity_tela_inicial_configurar">CONFIGURAÇÕES</string>
+    <string name="main_text_activity_tela_inicial">CALCULEI!</string>
+    <string name="developers">Desenvolvido por joaosf e gnovakovski</string>
 
     <!-- Strings related to Settings -->
 
