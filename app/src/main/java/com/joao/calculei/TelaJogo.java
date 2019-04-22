@@ -24,12 +24,13 @@ public class TelaJogo extends AppCompatActivity {
     int ExerciciosEmTela = 30;
     int TempoNova = 5000;
     int TempoResolve = 15000;
-    int NivelDeDificuldade = 3;
+    int nivelDeDificuldade = 3;
     private Thread ThreadAtualizaGrid;
-    Button btnDesistir;
+    Button btnSair, btnReiniciar;
     Button btnOpcao1;
     Button btnOpcao2;
     Button btnOpcao3;
+    TextView textViewA, textViewB, textViewC;
     TextView txtConta;
     TextView txtPontos;
     int CodExec = 0;
@@ -42,49 +43,53 @@ public class TelaJogo extends AppCompatActivity {
         setContentView(R.layout.activity_tela_jogo);
 
         gvJogo = (GridView) findViewById(R.id.gvJogo);
-        btnDesistir = (Button) findViewById(R.id.btnDesistir);
+        btnSair = (Button) findViewById(R.id.btnSair);
+        btnSair = (Button) findViewById(R.id.btnReiniciar);
         txtConta = (TextView) findViewById(R.id.txtConta);
         txtPontos= (TextView) findViewById(R.id.txtPontos);
+        textViewA = (TextView) findViewById(R.id.textViewA);
+        textViewB = (TextView) findViewById(R.id.textViewB);
+        textViewC = (TextView) findViewById(R.id.textViewC);
 
-        btnDesistir.setOnClickListener(new View.OnClickListener() {
+        btnSair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TelaJogo.this);
                 builder.setTitle("Deseja salvar sua pontuação?")
-                    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            AlertDialog.Builder builder = new AlertDialog.Builder(TelaJogo.this);
-                            builder.setTitle("Jogador");
+                        .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(TelaJogo.this);
+                                builder.setTitle("Jogador");
 
-                            final EditText input = new EditText(TelaJogo.this);
+                                final EditText input = new EditText(TelaJogo.this);
 
-                            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
-                            builder.setView(input);
+                                input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_NORMAL);
+                                builder.setView(input);
 
-                            builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    String Jogador = input.getText().toString();
-                                    ObjJogo.SalvarRanking(TelaJogo.this,Jogador);
-                                    finish();
-                                }
-                            });
-                            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                    finish();
-                                }
-                            });
-                            builder.show();
-                        }
-                    })
-                    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                });
+                                builder.setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String Jogador = input.getText().toString();
+                                        ObjJogo.SalvarRanking(TelaJogo.this,Jogador);
+                                        finish();
+                                    }
+                                });
+                                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                        finish();
+                                    }
+                                });
+                                builder.show();
+                            }
+                        })
+                        .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        });
                 builder.create().show();
             }
         });
@@ -98,7 +103,7 @@ public class TelaJogo extends AppCompatActivity {
     private void PrepararConfiguracaoes() {
         Cursor curRank = Banco.BDAdapter.executaConsultaSQL(TelaJogo.this,"select * from config");
         if (curRank.moveToFirst()) {
-            NivelDeDificuldade = curRank.getInt(curRank.getColumnIndex("Dificuldade"));
+            nivelDeDificuldade = curRank.getInt(curRank.getColumnIndex("Dificuldade"));
             TempoNova = curRank.getInt(curRank.getColumnIndex("TempoNova"));
             TempoResolve = curRank.getInt(curRank.getColumnIndex("TempoResolve"));
         }
@@ -114,7 +119,7 @@ public class TelaJogo extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if (ObjJogo.FimDoJogo() == true) {
-                                    btnDesistir.callOnClick();
+                                    btnSair.callOnClick();
                                     Toast Mensagem;
                                     Mensagem = Toast.makeText(getApplicationContext(),"Fim de Jogo! Pontuaçao final: "+ObjJogo.getPontos(),Toast.LENGTH_SHORT);
                                 }
@@ -186,6 +191,9 @@ public class TelaJogo extends AppCompatActivity {
         btnOpcao1.setVisibility(View.VISIBLE);
         btnOpcao2.setVisibility(View.VISIBLE);
         btnOpcao3.setVisibility(View.VISIBLE);
+        textViewA.setVisibility(View.VISIBLE);
+        textViewB.setVisibility(View.VISIBLE);
+        textViewC.setVisibility(View.VISIBLE);
     }
 
     private void setInvisibleAlternativas() {
@@ -193,6 +201,9 @@ public class TelaJogo extends AppCompatActivity {
         btnOpcao1.setVisibility(View.INVISIBLE);
         btnOpcao2.setVisibility(View.INVISIBLE);
         btnOpcao3.setVisibility(View.INVISIBLE);
+        textViewA.setVisibility(View.INVISIBLE);
+        textViewB.setVisibility(View.INVISIBLE);
+        textViewC.setVisibility(View.INVISIBLE);
     }
 
     private void PrepararComponentesGrid() {
@@ -245,7 +256,7 @@ public class TelaJogo extends AppCompatActivity {
                 }
                 CodExec = position;
                 txtConta.setText(ObjJogo.getExercicio(position)+"=");
-                Double[] Alternativas = ObjJogo.RetornaAlternativas(position);
+                Double[] Alternativas = ObjJogo.retornaAlternativas(position);
                 btnOpcao1.setText(String.format("%.0f", Alternativas[0]));
                 btnOpcao2.setText(String.format("%.0f", Alternativas[1]));
                 btnOpcao3.setText(String.format("%.0f", Alternativas[2]));
@@ -255,6 +266,7 @@ public class TelaJogo extends AppCompatActivity {
         gvJogo.setAdapter(gvDadosJogo);
 
         ObjJogo = new Objetos.Jogo();
-        ObjJogo.Preparar(ExerciciosEmTela,NivelDeDificuldade,TempoNova,TempoResolve);
+        ObjJogo.Preparar(ExerciciosEmTela, nivelDeDificuldade,TempoNova,TempoResolve);
     }
 }
+

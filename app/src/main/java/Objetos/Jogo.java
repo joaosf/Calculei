@@ -3,8 +3,6 @@ package Objetos;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
-import com.joao.calculei.TelaJogo;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -12,7 +10,7 @@ import java.util.Random;
 
 public class Jogo extends AppCompatActivity {
     private Exercicio[] Exercicios;
-    private int Dificuldade;
+    private int dificuldade;
     private Random FuncRandom;
     int SegundosParaNovoExercicio = 5000;//5s
     private Thread ThreadAtualizaExercicios;
@@ -23,15 +21,15 @@ public class Jogo extends AppCompatActivity {
 
     private int Pontos;
 
-    public void Preparar(final int NumExercicios, final int Dificuldade, final int TempoNova, final int TempoResolve) {
-        Exercicios = new Exercicio[NumExercicios];
-        SegundosParaNovoExercicio = TempoNova;
+    public void Preparar(final int numExercicios, final int dificuldade, final int tempoNova, final int tempoResolve) {
+        Exercicios = new Exercicio[numExercicios];
+        SegundosParaNovoExercicio = tempoNova;
 
-        for (int i = 0; i < NumExercicios;i++) {
+        for (int i = 0; i < numExercicios;i++) {
             Exercicios[i] = new Exercicio();
-            Exercicios[i].Preprar(TempoResolve);
+            Exercicios[i].preparar(tempoResolve);
         }
-        this.Dificuldade = Dificuldade;
+        this.dificuldade = dificuldade;
         FuncRandom = new Random();
         PrepararThreadAtualizaExercicios();
     }
@@ -50,7 +48,7 @@ public class Jogo extends AppCompatActivity {
                                     while (Exercicios[Rand].isAtivo() == true) {
                                         Rand = FuncRandom.nextInt(Exercicios.length);
                                     }
-                                    Exercicios[Rand].ProximoExercicio(Dificuldade);
+                                    Exercicios[Rand].proximoExercicio(dificuldade);
                                 }
                             }
                         });
@@ -88,7 +86,7 @@ public class Jogo extends AppCompatActivity {
         Exercicios[CodExercicio].setResultado(Resultado);
         if (Exercicios[CodExercicio].getResultadoEsperado().equals(Exercicios[CodExercicio].getResultado())) {
             Pontos = Pontos + (Exercicios[CodExercicio].getPeso()+(Exercicios[CodExercicio].getPercentualRestante()/10));
-            Exercicios[CodExercicio].ZerarExercicio();
+            Exercicios[CodExercicio].zerarExercicio();
             return true;
         } else {
             Pontos = Pontos - (Exercicios[CodExercicio].getPeso()+(Exercicios[CodExercicio].getPercentualRestante()/10));
@@ -97,16 +95,16 @@ public class Jogo extends AppCompatActivity {
 
     }
 
-    public Double[] RetornaAlternativas(int CodExercicio) {
-        Double ResEsp = Exercicios[CodExercicio].getResultadoEsperado();
-        int MargemMin = FuncRandom.nextInt(10);
-        int MargemMax = FuncRandom.nextInt(50);
-        Double[] Opcoes = new Double[3];
-        Opcoes[0] = ResEsp-(MargemMin*ResEsp/100);
-        Opcoes[1] = ResEsp;
-        Opcoes[2] = ResEsp+(MargemMax*ResEsp/100);
-        Collections.shuffle(Arrays.asList(Opcoes));
-        return Opcoes;
+    public Double[] retornaAlternativas(int codExercicio) {
+        Double resultadoEsperado = Exercicios[codExercicio].getResultadoEsperado();
+        int margemMin = FuncRandom.nextInt(resultadoEsperado.intValue()) + (resultadoEsperado.intValue()/2);
+        int margemMax = FuncRandom.nextInt(resultadoEsperado.intValue()) + resultadoEsperado.intValue();
+        Double[] opcoes = new Double[3];
+        opcoes[0] = Double.valueOf(margemMin);
+        opcoes[1] = resultadoEsperado;
+        opcoes[2] = Double.valueOf(margemMax);
+        Collections.shuffle(Arrays.asList(opcoes));
+        return opcoes;
     }
 
     public boolean FimDoJogo() {
