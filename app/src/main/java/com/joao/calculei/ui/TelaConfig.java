@@ -1,17 +1,14 @@
-package com.joao.calculei;
+package com.joao.calculei.ui;
 
-import android.annotation.SuppressLint;
 import android.database.Cursor;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DialerFilter;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import com.joao.calculei.R;
 
 public class TelaConfig extends AppCompatActivity {
 
@@ -47,7 +44,7 @@ public class TelaConfig extends AppCompatActivity {
     }
 
     private void CarregarDoBanco(){
-        Cursor curRank = Banco.BDAdapter.executaConsultaSQL(TelaConfig.this,"select * from config");
+        Cursor curRank = com.joao.calculei.banco.BDAdapter.executaConsultaSQL(TelaConfig.this,"select * from config");
         if (curRank.moveToFirst()) {
             int colunaDificuldade = curRank.getInt(curRank.getColumnIndex("Dificuldade"));
             int colunaTemponova = curRank.getInt(curRank.getColumnIndex("TempoNova"))/1000;
@@ -60,7 +57,7 @@ public class TelaConfig extends AppCompatActivity {
     }
 
     private void Salvar() {
-        Banco.BDAdapter.executarComandoSQL(TelaConfig.this,"delete from config");
+        com.joao.calculei.banco.BDAdapter.executarComandoSQL(TelaConfig.this,"delete from config");
         int Dificuldade = 3;
         int TempoNova = 5 * 1000;
         int TempoResolve = 15 * 1000;
@@ -71,7 +68,7 @@ public class TelaConfig extends AppCompatActivity {
         } catch (Exception e) {
             finish();
         }
-        Banco.BDAdapter.executarComandoSQL(TelaConfig.this,"insert into config(dificuldade, temponova, temporesolve) values("+ Dificuldade+","+ TempoNova+","+ TempoResolve+");");
+        com.joao.calculei.banco.BDAdapter.executarComandoSQL(TelaConfig.this,"insert into config(dificuldade, temponova, temporesolve) values("+ Dificuldade+","+ TempoNova+","+ TempoResolve+");");
         finish();
     }
 

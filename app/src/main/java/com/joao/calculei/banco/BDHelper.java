@@ -1,4 +1,4 @@
-package Banco;
+package com.joao.calculei.banco;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

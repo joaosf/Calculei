@@ -1,4 +1,4 @@
-package Objetos;
+package com.joao.calculei.objetos;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -127,7 +127,7 @@ public class Jogo extends AppCompatActivity {
 
     public void SalvarRanking(Context ctx, String Jogador) {
         if (!Jogador.equals("")) {
-            Banco.BDAdapter.executarComandoSQL(ctx,"insert into ranking(nome, pontuacao) values('"+Jogador+"', '"+getPontos()+"')");
+            com.joao.calculei.banco.BDAdapter.executarComandoSQL(ctx,"insert into ranking(nome, pontuacao) values('"+Jogador+"', '"+getPontos()+"')");
         }
     }
 

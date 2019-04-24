@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorMain"
-    tools:context="com.joao.calculei.TelaInicial">
+    tools:context="com.joao.calculei.ui.TelaInicial">
 
     <ImageView
         android:id="@+id/imageView"

@@ -1,4 +1,4 @@
-package com.joao.calculei;
+package com.joao.calculei.ui;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,11 +16,13 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.joao.calculei.R;
+
 public class TelaJogo extends AppCompatActivity {
 
     private GridView gvJogo;
     private ArrayAdapter<String> gvDadosJogo;
-    Objetos.Jogo ObjJogo;
+    com.joao.calculei.objetos.Jogo ObjJogo;
     int ExerciciosEmTela = 30;
     int TempoNova = 5000;
     int TempoResolve = 15000;
@@ -101,7 +103,7 @@ public class TelaJogo extends AppCompatActivity {
     }
 
     private void PrepararConfiguracaoes() {
-        Cursor curRank = Banco.BDAdapter.executaConsultaSQL(TelaJogo.this,"select * from config");
+        Cursor curRank = com.joao.calculei.banco.BDAdapter.executaConsultaSQL(TelaJogo.this,"select * from config");
         if (curRank.moveToFirst()) {
             nivelDeDificuldade = curRank.getInt(curRank.getColumnIndex("Dificuldade"));
             TempoNova = curRank.getInt(curRank.getColumnIndex("TempoNova"));
@@ -265,7 +267,7 @@ public class TelaJogo extends AppCompatActivity {
         gvJogo.setNumColumns(5);
         gvJogo.setAdapter(gvDadosJogo);
 
-        ObjJogo = new Objetos.Jogo();
+        ObjJogo = new com.joao.calculei.objetos.Jogo();
         ObjJogo.Preparar(ExerciciosEmTela, nivelDeDificuldade,TempoNova,TempoResolve);
     }
 }

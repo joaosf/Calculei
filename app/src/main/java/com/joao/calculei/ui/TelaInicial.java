@@ -1,15 +1,12 @@
-package com.joao.calculei;
+package com.joao.calculei.ui;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
+
+import com.joao.calculei.R;
 
 public class TelaInicial extends AppCompatActivity {
     private Button btnJogar;
