@@ -2,6 +2,8 @@ package Objetos;
 
 import android.support.v7.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 public class Exercicio extends AppCompatActivity {
@@ -34,22 +36,42 @@ public class Exercicio extends AppCompatActivity {
         percentualRestante = tempoParaResolver /1000;
     }
     public void proximoExercicio(int dificuldade) {
+        //Cada nível de dificuldade adiciona um numero a equação
+        //Ex.:
+        // Nível 1 e 2: 1+1
+        // Nivel 3: 1+1+1
+        // Nivel 4: 1+1+1+1
+        //Obs.: Sim, acima do nível 4 é difícil pra @!#$#@@#
+
         while (peso < 2) {
             peso = funcRandom.nextInt(dificuldade)+1;
         }
         numeros = new int[peso];
+
+        //peso -1: pq a quantidade de operações executadas é sempre uma a menos que a quantidade de números da equação
         operacoes = new String[peso -1];
+
+        //for para gerar um número e operador por vez
         for (int i = 0; i< peso; i++) {
+
+            //Gera um número aleatório de 1 a dificuldade* 5 (Cinco pq eu quis assim, "tempero a gosto")
             numeros[i] = funcRandom.nextInt(dificuldade*5);
             while (numeros[i] < 1) {
                 numeros[i] = funcRandom.nextInt(dificuldade*5);
             }
+
+            //Se não for o ultimo número, não gerar operador
             if (i < peso -1) {
                 operacoes[i] = opcoes[funcRandom.nextInt(opcoes.length-1)];
             }
         }
         ativo = true;
         CalcularResultadoEsperado();
+        //Quando o resultado for menor que zero, gera novamente, para evitar erro na classe Jogo.java:100
+        if (resultadoEsperado < 1) {
+            proximoExercicio(dificuldade);
+        }
+
         atualizarPercentual();
     }
 
@@ -80,11 +102,16 @@ public class Exercicio extends AppCompatActivity {
     }
 
     private void CalcularResultadoEsperado() {
+
+        //HOTFIX para atender o problema que não calculava considerando as prioridades matematicas
+        reordenarOperadores();
+
         resultadoEsperado = 0.0;
         int NumeroAnterior = 0;
         String OperacaoAtual = "";
         for (int i = 0; i< numeros.length; i++) {
             if (i > 0) {
+                // Operadores
                 OperacaoAtual = operacoes[i-1];
                 if (OperacaoAtual.equals("+")) {
                     resultadoEsperado = resultadoEsperado + (NumeroAnterior + numeros[i]);
@@ -104,6 +131,32 @@ public class Exercicio extends AppCompatActivity {
                 NumeroAnterior = numeros[i];
             }
         }
+    }
+
+    private void reordenarOperadores() {
+        HashMap<Integer, ArrayList<String>> operadoresTmp = new HashMap<>();
+        operadoresTmp.put(1,new ArrayList<String>());
+        operadoresTmp.put(2,new ArrayList<String>());
+        for (String operador: operacoes) {
+            if (operador.equals("*") || operador.equals("/")) {
+                operadoresTmp.get(1).add(operador);
+            } else {
+                operadoresTmp.get(2).add(operador);
+            }
+        }
+
+        int lengthOperadores = operacoes.length;
+        int countOp = 0;
+        String[] operacoesOrdenadas = new String[lengthOperadores];
+
+        for (ArrayList<String> opArray: operadoresTmp.values()) {
+            for (String operador: opArray) {
+                operacoesOrdenadas[countOp] = operador;
+                countOp++;
+            }
+        }
+
+        operacoes = operacoesOrdenadas;
     }
 
     public int[] getNumeros() {
