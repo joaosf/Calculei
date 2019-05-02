@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.joao.calculei.R;
 
 public class SignInActivity extends AppCompatActivity {
-    private EditText email, password, birthday;
+    private EditText email, password;
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
     private static String TAG = "FirebaseSignIn";
@@ -30,7 +30,6 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         email = findViewById(R.id.editTextEmail);
         password = findViewById(R.id.editTextPassword);
-        birthday = findViewById(R.id.editTextBirthday);
         buttonSignIn = findViewById(R.id.buttonSignIn);
         buttonSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +66,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private boolean validaCampos(){
-        if(email != null && password != null && birthday != null){
+        if(email != null && password != null){
             return true;
         }
         else{
