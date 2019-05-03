@@ -66,11 +66,11 @@ public class LoginActivity extends AppCompatActivity {
         //TODO condicoes para logar automaticamente
         // Check if user is signed in (non-null) and update UI accordingly.
         //FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-        updateUI(account);
+        //updateUIGoogle(currentUser);
+        updateUIGoogle(account);
     }
 
-    private void updateUI(GoogleSignInAccount account) {
+    private void updateUIGoogle(GoogleSignInAccount account) {
         if(account != null ){
             //TODO Atualizar a UI pois o usuário está logado
             Intent intent = new Intent(this, TelaInicial.class);
@@ -82,6 +82,17 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
+    private void updateUIFirebase(FirebaseUser user){
+        if(user != null){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
+        else{
+            Toast.makeText(this, "Ocorreu um erro.", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     private void googleSignIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -97,13 +108,13 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
+                            updateUIFirebase(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(LoginActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+                            updateUIFirebase(null);
                         }
                     }
                 });
@@ -129,12 +140,12 @@ public class LoginActivity extends AppCompatActivity {
             // Signed in successfully, show authenticated UI
             Intent intent = new Intent(this, TelaInicial.class);
             startActivity(intent);
-            //updateUI(account);
+            //updateUIGoogle(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("ERRO", "signInResult:failed code=" + e.getStatusCode());
-            //updateUI(null);
+            //updateUIGoogle(null);
         }
     }
 
