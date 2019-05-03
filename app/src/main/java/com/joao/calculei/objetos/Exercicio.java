@@ -109,25 +109,25 @@ public class Exercicio extends AppCompatActivity {
         resultadoEsperado = 0.0;
         int NumeroAnterior = 0;
         String OperacaoAtual = "";
-        for (int i = 0; i< numeros.length; i++) {
+        for (int i = 0; i < numeros.length; i++) {
             if (i > 0) {
                 // Operadores
                 OperacaoAtual = operacoes[i-1];
+                // Se ja tiver somado o primeiro resultado, somar com o resultado da primeira equação, se não, com o numero anterior
                 if (OperacaoAtual.equals("+")) {
-                    resultadoEsperado = resultadoEsperado + (NumeroAnterior + numeros[i]);
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) + numeros[i]+"");
                 } else
                 if (OperacaoAtual.equals("-")) {
-                    resultadoEsperado = resultadoEsperado + (NumeroAnterior - numeros[i]);
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) - numeros[i]+"");
                 } else
                 if (OperacaoAtual.equals("*")) {
-                    resultadoEsperado = resultadoEsperado + (NumeroAnterior * numeros[i]);
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) * numeros[i]+"");
                 }else
                 if (OperacaoAtual.equals("/")) {
-                    resultadoEsperado = resultadoEsperado + (NumeroAnterior / numeros[i]);
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) / numeros[i]+"");
                 }
-                i=i+1;
             }
-            if (i < numeros.length) {
+            if (i == 0) {
                 NumeroAnterior = numeros[i];
             }
         }
