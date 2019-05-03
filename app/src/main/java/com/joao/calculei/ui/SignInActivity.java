@@ -40,18 +40,19 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void signIn() {
+        //Somente tenta logar se todos os campos estiverem preenchidos
         if(validaCampos()) {
             mAuth.createUserWithEmailAndPassword(email.getText().toString(), password.getText().toString())
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
+                                //Em caso de sucesso, vai para a tela de login
                                 Log.d(TAG, "createUserWithEmail:success");
                                 FirebaseUser user = mAuth.getCurrentUser();
                                 updateUI(user);
                             } else {
-                                // If sign in fails, display a message to the user.
+                                //Se falhar, mostra um Toast para o user
                                 Log.w(TAG, "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(SignInActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
@@ -76,7 +77,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user){
         if(user != null){
-            Intent intent = new Intent(this, TelaInicial.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
         }

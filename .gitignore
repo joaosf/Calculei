@@ -150,6 +150,8 @@ obj/
 .idea/dynamic.xml
 .idea/uiDesigner.xml
 
+google-services.json
+
 # OS-specific files
 .DS_Store
 .DS_Store?
