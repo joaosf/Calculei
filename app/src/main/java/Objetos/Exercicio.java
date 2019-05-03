@@ -110,36 +110,21 @@ public class Exercicio extends AppCompatActivity {
         int NumeroAnterior = 0;
         String OperacaoAtual = "";
         for (int i = 0; i < numeros.length; i++) {
-            if (resultadoEsperado > 0.0) {
-                // Operadores
-                OperacaoAtual = operacoes[i-1];
-                if (OperacaoAtual.equals("+")) {
-                    resultadoEsperado = resultadoEsperado + numeros[i];
-                } else
-                if (OperacaoAtual.equals("-")) {
-                    resultadoEsperado = resultadoEsperado - numeros[i];
-                } else
-                if (OperacaoAtual.equals("*")) {
-                    resultadoEsperado = resultadoEsperado * numeros[i];
-                }else
-                if (OperacaoAtual.equals("/")) {
-                    resultadoEsperado = resultadoEsperado / numeros[i];
-                }
-            } else
             if (i > 0) {
                 // Operadores
                 OperacaoAtual = operacoes[i-1];
+                // Se ja tiver somado o primeiro resultado, somar com o resultado da primeira equação, se não, com o numero anterior
                 if (OperacaoAtual.equals("+")) {
-                    resultadoEsperado = Double.parseDouble(NumeroAnterior + numeros[i]+"");
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) + numeros[i]+"");
                 } else
                 if (OperacaoAtual.equals("-")) {
-                    resultadoEsperado = Double.parseDouble(NumeroAnterior - numeros[i]+"");
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) - numeros[i]+"");
                 } else
                 if (OperacaoAtual.equals("*")) {
-                    resultadoEsperado = Double.parseDouble(NumeroAnterior * numeros[i]+"");
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) * numeros[i]+"");
                 }else
                 if (OperacaoAtual.equals("/")) {
-                    resultadoEsperado = Double.parseDouble(NumeroAnterior / numeros[i]+"");
+                    resultadoEsperado = Double.parseDouble((resultadoEsperado > 0.0 ? resultadoEsperado : NumeroAnterior) / numeros[i]+"");
                 }
             }
             if (i == 0) {
