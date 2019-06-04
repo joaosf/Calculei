@@ -32,7 +32,6 @@ public class TelaJogo extends AppCompatActivity {
     Button btnOpcao1;
     Button btnOpcao2;
     Button btnOpcao3;
-    TextView textViewA, textViewB, textViewC;
     TextView txtConta;
     TextView txtPontos;
     int CodExec = 0;
@@ -49,9 +48,6 @@ public class TelaJogo extends AppCompatActivity {
         btnSair = (Button) findViewById(R.id.btnReiniciar);
         txtConta = (TextView) findViewById(R.id.txtConta);
         txtPontos= (TextView) findViewById(R.id.txtPontos);
-        textViewA = (TextView) findViewById(R.id.textViewA);
-        textViewB = (TextView) findViewById(R.id.textViewB);
-        textViewC = (TextView) findViewById(R.id.textViewC);
 
         btnSair.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,9 +189,6 @@ public class TelaJogo extends AppCompatActivity {
         btnOpcao1.setVisibility(View.VISIBLE);
         btnOpcao2.setVisibility(View.VISIBLE);
         btnOpcao3.setVisibility(View.VISIBLE);
-        textViewA.setVisibility(View.VISIBLE);
-        textViewB.setVisibility(View.VISIBLE);
-        textViewC.setVisibility(View.VISIBLE);
     }
 
     private void setInvisibleAlternativas() {
@@ -203,9 +196,6 @@ public class TelaJogo extends AppCompatActivity {
         btnOpcao1.setVisibility(View.INVISIBLE);
         btnOpcao2.setVisibility(View.INVISIBLE);
         btnOpcao3.setVisibility(View.INVISIBLE);
-        textViewA.setVisibility(View.INVISIBLE);
-        textViewB.setVisibility(View.INVISIBLE);
-        textViewC.setVisibility(View.INVISIBLE);
     }
 
     private void PrepararComponentesGrid() {
